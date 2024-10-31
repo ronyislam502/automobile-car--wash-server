@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { ServiceRoutes } from "../modeuls/service/service.route";
-import { SlotRoutes } from "../modeuls/slot/slot.route";
+import { ServiceRoutes } from "../models/service/service.route";
+import { SlotRoutes } from "../models/slot/slot.route";
 
 const router = Router();
 
