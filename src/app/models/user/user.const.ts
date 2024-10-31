@@ -4,3 +4,12 @@ export const USER_ROLE = {
 } as const;
 
 export const UserStatus = ["in-progress", "blocked"];
+
+export const userSearchableFields = [
+  "email",
+  "role",
+  "phone",
+  "name",
+  "status",
+  "address",
+];

@@ -28,7 +28,7 @@ const userSchema = new Schema<TUser, UserModel>(
       enum: {
         values: ["admin", "user"],
       },
-      required: true,
+      default: "user",
     },
     address: {
       type: String,
