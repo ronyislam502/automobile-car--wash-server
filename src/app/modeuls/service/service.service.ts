@@ -1,3 +1,6 @@
+import QueryBuilder from "../../builder/queryBuilder";
+import { serviceSearchableFields } from "./service.constant";
+
 import { TService } from "./service.interface";
 import { Service } from "./service.model";
 
@@ -6,9 +9,19 @@ const createServiceIntoDB = async (payload: TService) => {
   return result;
 };
 
-const getAllServiceFromDB = async () => {
-  const result = await Service.find();
-  return result;
+const getAllServiceFromDB = async (query: Record<string, unknown>) => {
+  const serviceQuery = new QueryBuilder(Service.find(), query)
+    .search(serviceSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+  const meta = await serviceQuery.countTotal();
+  const result = await serviceQuery.modelQuery;
+  return {
+    meta,
+    result,
+  };
 };
 
 const getSingleServiceFromDB = async (id: string) => {
