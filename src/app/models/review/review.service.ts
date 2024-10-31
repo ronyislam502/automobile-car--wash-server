@@ -3,7 +3,6 @@ import AppError from "../../errors/AppError";
 import { User } from "../user/user.model";
 import { TReview } from "./review.interface";
 import { Review } from "./review.model";
-import QueryBuilder from "../../builder/queryBuilder";
 
 const createReviewIntoDB = async (payload: TReview) => {
   const isUserExists = await User.findById(payload.user);
@@ -15,22 +14,35 @@ const createReviewIntoDB = async (payload: TReview) => {
   return result;
 };
 
-const getAllReviewsFromDB = async (query: Record<string, unknown>) => {
-  const reviewQuery = new QueryBuilder(Review.find().populate("user"), query)
-    .filter()
-    .sort()
-    .paginate()
-    .fields();
+const getAllReviewsFromDB = async (limit: number) => {
+  let result;
+  if (limit > 0) {
+    result = await Review.find().sort({ createdAt: -1 }).limit(limit);
+  } else {
+    result = await Review.find().sort({ createdAt: -1 });
+  }
 
-  const meta = await reviewQuery.countTotal();
-  const result = await reviewQuery.modelQuery;
+  const allReviews = await Review.find();
+
+  //calculate
+  const totalRatings = allReviews.reduce(
+    (sum, review) => sum + review.rating,
+    0
+  );
+  const averageRating =
+    allReviews.length > 0
+      ? (totalRatings / allReviews.length).toFixed(2)
+      : "0.00";
+  const totalRating = allReviews?.length;
 
   return {
-    meta,
     result,
+    averageRating,
+    totalRating,
   };
 };
 
 export const ReviewServices = {
   createReviewIntoDB,
+  getAllReviewsFromDB,
 };
