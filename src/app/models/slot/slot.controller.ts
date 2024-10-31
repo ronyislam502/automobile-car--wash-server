@@ -21,6 +21,7 @@ const getAllSlots = catchAsync(async (req, res) => {
     statusCode: httpStatus.OK,
     success: true,
     message: " Slots retrieved successfully",
+    meta: result.meta,
     data: result,
   });
 });
@@ -32,6 +33,7 @@ const getAvailableSlots = catchAsync(async (req, res) => {
     statusCode: httpStatus.OK,
     success: true,
     message: " Slots retrieved successfully",
+    meta: result.meta,
     data: result,
   });
 });

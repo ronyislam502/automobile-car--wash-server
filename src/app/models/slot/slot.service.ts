@@ -52,25 +52,26 @@ const getAllSlotsFromDB = async (query: Record<string, unknown>) => {
     meta,
     result,
   };
-  return result;
 };
 
 const getAvailableSlotsFromDB = async (query: Record<string, unknown>) => {
-  const searchField = ["name", "date", "service", "serviceId"];
-
   const slotQuery = new QueryBuilder(
     Slot.find({ isBooked: { $ne: "booked" } }).populate("service"),
     query
   )
-    .search(searchField)
+    .search(slotSearchField)
     .filter()
     .sort()
     .paginate()
     .fields();
 
+  const meta = await slotQuery.countTotal();
   const result = await slotQuery.modelQuery;
 
-  return result;
+  return {
+    meta,
+    result,
+  };
 };
 
 const updateSlotIntoDB = async (id: string, payload: Partial<TSlot>) => {
