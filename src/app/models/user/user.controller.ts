@@ -3,13 +3,13 @@ import catchAsync from "../../utilities/catchAsync";
 import sendResponse from "../../utilities/sendResponse";
 import { UserServices } from "./user.service";
 
-const createUser = catchAsync(async (req, res) => {
-  const result = await UserServices.createUserIntoDb(req.body);
+const signUpUser = catchAsync(async (req, res) => {
+  const result = await UserServices.signUpUserIntoDB(req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User Created successfully",
+    message: "User signup successfully",
     data: result,
   });
 });
@@ -26,6 +26,6 @@ const getAllUsers = catchAsync(async (req, res) => {
 });
 
 export const UserControllers = {
-  createUser,
+  signUpUser,
   getAllUsers,
 };

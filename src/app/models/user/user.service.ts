@@ -1,7 +1,7 @@
 import { TUser } from "./user.interface";
 import { User } from "./user.model";
 
-const createUserIntoDb = async (payload: TUser) => {
+const signUpUserIntoDB = async (payload: TUser) => {
   const result = await User.create(payload);
   return result;
 };
@@ -21,7 +21,7 @@ const updateUserIntoDB = async (id: string, payload: Partial<TUser>) => {
 };
 
 export const UserServices = {
-  createUserIntoDb,
+  signUpUserIntoDB,
   getAllUsersFromDB,
   updateUserIntoDB,
 };

@@ -2,6 +2,7 @@ import { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
 import { TUser, UserModel } from "./user.interface";
 import config from "../../config";
+import { UserStatus } from "./user.const";
 
 const userSchema = new Schema<TUser, UserModel>(
   {
@@ -32,6 +33,13 @@ const userSchema = new Schema<TUser, UserModel>(
     address: {
       type: String,
       required: true,
+    },
+    status: {
+      type: String,
+      enum: {
+        values: UserStatus,
+      },
+      default: "in-process",
     },
     isDeleted: {
       type: Boolean,

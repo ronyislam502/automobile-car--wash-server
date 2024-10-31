@@ -4,10 +4,15 @@ import { SlotRoutes } from "../models/slot/slot.route";
 import { UserRoutes } from "../models/user/user.route";
 import { BookingRoutes } from "../models/booking/booking.route";
 import { ReviewRoutes } from "../models/review/review.route";
+import { AuthRoutes } from "../models/auth/auth.route";
 
 const router = Router();
 
 const moduleRoutes = [
+  {
+    path: "/auth",
+    route: AuthRoutes,
+  },
   {
     path: "/users",
     route: UserRoutes,

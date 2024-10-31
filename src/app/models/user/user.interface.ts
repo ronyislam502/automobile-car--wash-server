@@ -9,6 +9,7 @@ export type TUser = {
   phone: string;
   role: "admin" | "user";
   address: string;
+  status: "in-process" | "blocked";
   isDeleted: boolean;
 };
 

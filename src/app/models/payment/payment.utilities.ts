@@ -8,7 +8,7 @@ dotenv.config();
 export const initiatePayment = async (payload: TPayment) => {
   const res = await axios.post(config.payment_url!, {
     store_id: config.store_id,
-    tran_id: paymentData.transactionId,
+    tran_id: payload.transactionId,
     success_url: `${config.live_url}/api/payment/confirmation?transactionId=${payload.transactionId}&status=success&paidStatus=${payload.paidStatus}`,
     fail_url: `${config.live_url}/api/payment/confirmation?status=failed`,
     cancel_url: config.client_url,
