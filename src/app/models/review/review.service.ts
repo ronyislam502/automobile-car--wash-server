@@ -1,44 +1,38 @@
-import httpStatus from "http-status";
-import AppError from "../../errors/AppError";
-import { User } from "../user/user.model";
-import { TReview } from "./review.interface";
-import { Review } from "./review.model";
+import httpStatus from 'http-status';
+import AppError from '../../errors/AppError';
+import { User } from '../user/user.model';
+import { TReview } from './review.interface';
+import { Review } from './review.model';
 
 const createReviewIntoDB = async (payload: TReview) => {
-  const isUserExists = await User.findById(payload.user);
+  const isUserExists = await User.findById(payload.user.id);
 
   if (isUserExists) {
-    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }
-  const result = await Review.create(payload);
+  const result = await (await Review.create(payload)).populate('user');
   return result;
 };
 
 const getAllReviewsFromDB = async (limit: number) => {
-  let result;
+  let reviews;
   if (limit > 0) {
-    result = await Review.find().sort({ createdAt: -1 }).limit(limit);
+    reviews = await Review.find()
+      .populate('user')
+      .sort({ createdAt: -1 })
+      .limit(limit);
   } else {
-    result = await Review.find().sort({ createdAt: -1 });
+    reviews = await Review.find().populate('user').sort({ createdAt: -1 });
   }
 
-  const allReviews = await Review.find();
-
   //calculate
-  const totalRatings = allReviews.reduce(
-    (sum, review) => sum + review.rating,
-    0
-  );
+  const totalRatings = reviews.reduce((sum, review) => sum + review.rating, 0);
   const averageRating =
-    allReviews.length > 0
-      ? (totalRatings / allReviews.length).toFixed(2)
-      : "0.00";
-  const totalRating = allReviews?.length;
+    reviews.length > 0 ? (totalRatings / reviews.length).toFixed(2) : '0.00';
 
   return {
-    result,
+    reviews,
     averageRating,
-    totalRating,
   };
 };
 

@@ -1,7 +1,7 @@
-import QueryBuilder from "../../builder/queryBuilder";
-import { userSearchableFields } from "./user.const";
-import { TUser } from "./user.interface";
-import { User } from "./user.model";
+import QueryBuilder from '../../builder/queryBuilder';
+import { userSearchableFields } from './user.const';
+import { TUser } from './user.interface';
+import { User } from './user.model';
 
 const signUpUserIntoDB = async (payload: TUser) => {
   const result = await User.create(payload);
@@ -22,7 +22,7 @@ const getAllUsersFromDB = async (query: Record<string, unknown>) => {
 };
 
 const updateUserIntoDB = async (id: string, payload: Partial<TUser>) => {
-  const result = await User.findById(id, payload, {
+  const result = await User.findByIdAndUpdate(id, payload, {
     new: true,
     runValidators: true,
   });

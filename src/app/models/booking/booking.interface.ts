@@ -1,16 +1,16 @@
-import { Types } from "mongoose";
+import { Types } from 'mongoose';
 
 export type TVehicleType =
-  | "car"
-  | "truck"
-  | "SUV"
-  | "van"
-  | "motorcycle"
-  | "bus"
-  | "electricVehicle"
-  | "hybridVehicle"
-  | "bicycle"
-  | "tractor";
+  | 'car'
+  | 'truck'
+  | 'SUV'
+  | 'van'
+  | 'motorcycle'
+  | 'bus'
+  | 'electricVehicle'
+  | 'hybridVehicle'
+  | 'bicycle'
+  | 'tractor';
 
 export type TBooking = {
   customer: Types.ObjectId;

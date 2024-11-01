@@ -1,29 +1,29 @@
-import httpStatus from "http-status";
-import AppError from "../../errors/AppError";
-import { Service } from "../service/service.model";
-import { TSlot } from "./slot.interface";
-import { generateSlots } from "./slot.utilities";
-import { Slot } from "./slot.model";
-import QueryBuilder from "../../builder/queryBuilder";
-import { slotSearchField } from "./slot.constant";
+import httpStatus from 'http-status';
+import AppError from '../../errors/AppError';
+import { Service } from '../service/service.model';
+import { TSlot } from './slot.interface';
+import { generateSlots } from './slot.utilities';
+import { Slot } from './slot.model';
+import QueryBuilder from '../../builder/queryBuilder';
+import { slotSearchField } from './slot.constant';
 
 const createSlotIntoDB = async (payload: TSlot) => {
   const isService = await Service.findById(payload.service);
 
   if (!isService) {
-    throw new AppError(httpStatus.NOT_FOUND, "Service not Found");
+    throw new AppError(httpStatus.NOT_FOUND, 'Service not Found');
   }
 
   const serviceDuration = isService.duration;
 
   if (!serviceDuration) {
-    throw new AppError(httpStatus.BAD_REQUEST, "Service duration not defined");
+    throw new AppError(httpStatus.BAD_REQUEST, 'Service duration not defined');
   }
 
   const slots = generateSlots(
     payload.startTime,
     payload.endTime,
-    serviceDuration
+    serviceDuration,
   );
 
   const slotsDoc = slots.map((slot) => ({
@@ -39,7 +39,7 @@ const createSlotIntoDB = async (payload: TSlot) => {
 };
 
 const getAllSlotsFromDB = async (query: Record<string, unknown>) => {
-  const slotQuery = new QueryBuilder(Slot.find().populate("service"), query)
+  const slotQuery = new QueryBuilder(Slot.find().populate('service'), query)
     .search(slotSearchField)
     .filter()
     .sort()
@@ -56,8 +56,8 @@ const getAllSlotsFromDB = async (query: Record<string, unknown>) => {
 
 const getAvailableSlotsFromDB = async (query: Record<string, unknown>) => {
   const slotQuery = new QueryBuilder(
-    Slot.find({ isBooked: { $ne: "booked" } }).populate("service"),
-    query
+    Slot.find({ isBooked: { $ne: 'booked' } }).populate('service'),
+    query,
   )
     .search(slotSearchField)
     .filter()
@@ -75,17 +75,23 @@ const getAvailableSlotsFromDB = async (query: Record<string, unknown>) => {
 };
 
 const updateSlotIntoDB = async (id: string, payload: Partial<TSlot>) => {
-  const isSlotExists = await Slot.findById(payload);
+  const isSlotExists = await Slot.findById(id);
   if (!isSlotExists) {
-    throw new AppError(httpStatus.NOT_FOUND, "Slot not found");
+    throw new AppError(httpStatus.NOT_FOUND, 'Slot not found');
+  }
+  const isServiceExists = isSlotExists.service;
+  if (!isServiceExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Service not found');
   }
 
-  const isBooked = isSlotExists.isBooked === "booked";
+  const isBooked = isSlotExists.isBooked === 'booked';
   if (isBooked) {
-    throw new AppError(httpStatus.BAD_REQUEST, "Slot is booked at this time");
+    throw new AppError(httpStatus.BAD_REQUEST, 'Slot is booked at this time');
   }
 
-  const result = await Slot.findByIdAndUpdate(id, payload);
+  const result = await Slot.findByIdAndUpdate(id, payload, {
+    $set: { isBooked: 'available' },
+  }).populate('service');
   return result;
 };
 

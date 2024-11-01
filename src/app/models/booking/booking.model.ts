@@ -1,36 +1,36 @@
-import { Schema, model } from "mongoose";
-import { TBooking } from "./booking.interface";
+import { Schema, model } from 'mongoose';
+import { TBooking } from './booking.interface';
 
 const bookingSchema = new Schema<TBooking>(
   {
     customer: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     service: {
       type: Schema.Types.ObjectId,
-      ref: "Service",
+      ref: 'Service',
       required: true,
     },
     slot: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: "Slot",
+      ref: 'Slot',
     },
     vehicleType: {
       type: String,
       enum: [
-        "car",
-        "truck",
-        "SUV",
-        "van",
-        "motorcycle",
-        "bus",
-        "electricVehicle",
-        "hybridVehicle",
-        "bicycle",
-        "tractor",
+        'car',
+        'truck',
+        'SUV',
+        'van',
+        'motorcycle',
+        'bus',
+        'electricVehicle',
+        'hybridVehicle',
+        'bicycle',
+        'tractor',
       ],
       required: true,
     },
@@ -50,28 +50,10 @@ const bookingSchema = new Schema<TBooking>(
       type: String,
       required: true,
     },
-    amount: {
-      type: Number,
-      required: true,
-    },
-    status: {
-      type: String,
-      enum: ["Pending", "Paid", "Shipped", "Completed", "Cancelled"],
-      default: "Pending",
-    },
-    paidStatus: {
-      type: String,
-      enum: ["Pending", "Paid", "Failed"],
-      default: "Pending",
-    },
-    transactionId: {
-      type: String,
-      required: true,
-    },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-export const Booking = model<TBooking>("Booking", bookingSchema);
+export const Booking = model<TBooking>('Booking', bookingSchema);

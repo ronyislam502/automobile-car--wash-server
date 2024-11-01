@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 const timeStringSchema = z.string().refine(
   (time) => {
@@ -7,7 +7,7 @@ const timeStringSchema = z.string().refine(
   },
   {
     message: 'Invalid time format , expected "HH:MM" in 24 hours format',
-  }
+  },
 );
 
 const createSlotValidationSchema = z.object({
@@ -17,7 +17,7 @@ const createSlotValidationSchema = z.object({
       date: z.string(),
       startTime: timeStringSchema,
       endTime: timeStringSchema,
-      isBooked: z.enum(["available", "booked", "canceled"]),
+      isBooked: z.enum(['available', 'booked', 'canceled']),
     })
     .refine(
       (body) => {
@@ -27,8 +27,8 @@ const createSlotValidationSchema = z.object({
         return end > start;
       },
       {
-        message: "Start time should be before End time !  ",
-      }
+        message: 'Start time should be before End time !  ',
+      },
     ),
 });
 
@@ -39,7 +39,7 @@ const updateSlotValidationSchema = z.object({
       date: z.string().optional(),
       startTime: timeStringSchema.optional(),
       endTime: timeStringSchema.optional(),
-      isBooked: z.enum(["available", "booked", "canceled"]).optional(),
+      isBooked: z.enum(['available', 'booked', 'canceled']).optional(),
     })
     .refine(
       (body) => {
@@ -49,8 +49,8 @@ const updateSlotValidationSchema = z.object({
         return end > start;
       },
       {
-        message: "Start time should be before End time !  ",
-      }
+        message: 'Start time should be before End time !  ',
+      },
     ),
 });
 

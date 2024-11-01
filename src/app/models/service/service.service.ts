@@ -1,8 +1,8 @@
-import QueryBuilder from "../../builder/queryBuilder";
-import { serviceSearchableFields } from "./service.constant";
+import QueryBuilder from '../../builder/queryBuilder';
+import { serviceSearchableFields } from './service.constant';
 
-import { TService } from "./service.interface";
-import { Service } from "./service.model";
+import { TService } from './service.interface';
+import { Service } from './service.model';
 
 const createServiceIntoDB = async (payload: TService) => {
   const result = await Service.create(payload);
@@ -39,7 +39,11 @@ const updateServiceFromDB = async (id: string, payload: Partial<TService>) => {
 };
 
 const deleteServiceFromDB = async (id: string) => {
-  const result = await Service.findByIdAndUpdate(id);
+  const result = await Service.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    { new: true },
+  );
   return result;
 };
 

@@ -1,7 +1,7 @@
-import httpStatus from "http-status";
-import catchAsync from "../../utilities/catchAsync";
-import sendResponse from "../../utilities/sendResponse";
-import { SlotServices } from "./slot.service";
+import httpStatus from 'http-status';
+import catchAsync from '../../utilities/catchAsync';
+import sendResponse from '../../utilities/sendResponse';
+import { SlotServices } from './slot.service';
 
 const createSlot = catchAsync(async (req, res) => {
   const result = await SlotServices.createSlotIntoDB(req.body);
@@ -9,7 +9,7 @@ const createSlot = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Slot created Successfully",
+    message: 'Slot created Successfully',
     data: result,
   });
 });
@@ -20,7 +20,7 @@ const getAllSlots = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: " Slots retrieved successfully",
+    message: ' Slots retrieved successfully',
     meta: result.meta,
     data: result,
   });
@@ -32,7 +32,7 @@ const getAvailableSlots = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: " Slots retrieved successfully",
+    message: ' Slots retrieved successfully',
     meta: result.meta,
     data: result,
   });
@@ -45,7 +45,7 @@ const updateSlot = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: " Slots retrieved successfully",
+    message: ' Slots update successfully',
     data: result,
   });
 });
